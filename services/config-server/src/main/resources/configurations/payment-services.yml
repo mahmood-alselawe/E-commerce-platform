@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/payment1
+    username: alibou
+    password: alibou
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.type.mapping: paymentNotificationRequest:com.takarub.ecommerce.kafka.dto.PaymentNotificationRequest
+        # we use it because the producer need inform the consumer of our topic what is the object
+        #that we are sending after we send this consumer will aware of this object can be accepted
+        # and this layer of security level from kafka we need to inform two side
+  application:
+    name: payment-services
+
+
+server:
+  port: 8060

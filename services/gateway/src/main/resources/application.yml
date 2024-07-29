@@ -1,0 +1,14 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: "http://localhost:9082/realms/spring-app"
+  config:
+    import: optional:configserver:http://localhost:8888
+  application:
+    name: gateway-services
+
+
+
+
