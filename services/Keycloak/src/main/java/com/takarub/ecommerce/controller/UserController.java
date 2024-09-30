@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
     public final UserService userService;
@@ -36,6 +37,14 @@ public class UserController {
     public ResponseEntity<?> forgotPassword(@RequestParam String username) {
         userService.forgetPassword(username);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+    @GetMapping("/{id}/roles")
+    public ResponseEntity<?> getUserRoles(@PathVariable String id) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserRole(id));
+    }
+    @GetMapping("/{id}/groups")
+    public ResponseEntity<?> getUserGroup(@PathVariable String id) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserGroup(id));
     }
 
 

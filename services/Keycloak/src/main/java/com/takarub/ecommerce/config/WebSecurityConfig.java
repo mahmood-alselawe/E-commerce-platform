@@ -16,6 +16,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig {
+
+    private final JwtAuthConverter jwtAuthConverter;
+
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
 
@@ -50,6 +53,24 @@ public class WebSecurityConfig {
 
         };
     }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+
+        return httpSecurity
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest()
+                        .authenticated()
+                )
+                .oauth2ResourceServer(oauth2 -> oauth2
+                        .jwt(jwt -> jwt
+                                .jwtAuthenticationConverter(jwtAuthConverter)
+                        )
+                )
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .build();
+    }
+
 
 
 }

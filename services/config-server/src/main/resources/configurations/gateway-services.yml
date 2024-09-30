@@ -9,8 +9,12 @@ spring:
           uri: lb://CUSTOMER-SERVICES
           predicates:
             - Path=/api/v1/customer/**
+        - id: eureka-server
+          uri: http://localhost:8761
+          predicates:
+            - Path=/eureka/**
 
-        - id: order-services
+        - id: order-service
           uri: lb://ORDER-SERVICES
           predicates:
             - Path=/api/v1/orders/**

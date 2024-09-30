@@ -10,6 +10,8 @@ import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
+import org.keycloak.representations.idm.GroupRepresentation;
+import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -87,6 +89,26 @@ public class UserServiceImpl implements UserService {
 
 
     }
+
+    @Override
+    public UserResource getUser(String userId) {
+        UsersResource usersResource = getUsersResource();
+        return usersResource.get(userId);
+    }
+
+    @Override
+    public List<RoleRepresentation> getUserRole(String userId) {
+        return getUser(userId).roles().realmLevel().listAll();
+    }
+    @Override
+    public List<GroupRepresentation> getUserGroup(String userId) {
+        return getUser(userId).groups();
+    }
+
+
+
+
+
 
     private UsersResource getUsersResource() {
         return keycloak.realm(realm).users();

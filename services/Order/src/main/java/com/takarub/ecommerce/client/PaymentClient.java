@@ -4,6 +4,7 @@ import com.takarub.ecommerce.client.dto.PaymentRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @FeignClient(
         name = "PAYMENT-SERVICES",
@@ -12,5 +13,5 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface PaymentClient {
 
     @PostMapping
-    Integer requestOrderPayment(@RequestBody PaymentRequest paymentRequest);
+    Integer requestOrderPayment(@RequestBody PaymentRequest paymentRequest,@RequestHeader("Authorization") String token);
 }

@@ -18,8 +18,9 @@ public class OrderController {
     private final OrderServices orderServices;
 
     @PostMapping
-    public ResponseEntity<Integer> createOrder(@RequestBody @Valid OrderRequest request) {
-        return ResponseEntity.ok(orderServices.createOrder(request));
+    public ResponseEntity<Integer> createOrder(@RequestBody @Valid OrderRequest request ,@RequestHeader("Authorization") String token) {
+        System.out.println(token);
+        return ResponseEntity.ok(orderServices.createOrder(request,token));
     }
 
 

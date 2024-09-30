@@ -39,14 +39,14 @@ public class OrderServices {
     private final PaymentClient paymentClient;
 
 
-    public Integer createOrder(OrderRequest request) {
+    public Integer createOrder(OrderRequest request, String token) {
 
 
         // before we create order we need a few checks
         //1- checks if we have customer or not --> by open-feign-clients
         // to check you need comunecate with customer-ms
 
-        var customer = this.customerClient.findCustomerById(request.customerId())
+        var customer = this.customerClient.findCustomerById(request.customerId(),token)
                 .orElseThrow(() -> new BusinessException
                         ("can not create order:: No Customer exists with customer id: " + request.customerId()));
 
@@ -54,7 +54,8 @@ public class OrderServices {
 
 
         //2- purchase the products and this need to make request from product-ms
-        var purchaseProducts =this.productClient.purchaseProducts(request.products());
+        var purchaseProducts =this.productClient.purchaseProducts(request.products(),token);
+        System.out.println("this token for productClient : " + token);
 
         //3- persist order
         var order = this.orderRepository.save(mapper.toOrder(request));
@@ -80,7 +81,7 @@ public class OrderServices {
                 order.getReference(),
                 customer
         );
-        paymentClient.requestOrderPayment(paymentRequest);
+        paymentClient.requestOrderPayment(paymentRequest,token);
 
 
         //6- todo send order confirmation --> notification-ms (kafka)

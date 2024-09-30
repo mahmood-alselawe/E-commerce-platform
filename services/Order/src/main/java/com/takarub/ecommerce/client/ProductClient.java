@@ -23,11 +23,12 @@ public class ProductClient {
 
     private final RestTemplate restTemplate;
 
-    public List<PurchaseResponse> purchaseProducts(List<PurchaseRequest> requestsBody) {
+    public List<PurchaseResponse> purchaseProducts(List<PurchaseRequest> requestsBody ,String token) {
 
        HttpHeaders headers = new HttpHeaders();
        headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
        // here id need to pass toke or any thing her you can do it
+        headers.set(HttpHeaders.AUTHORIZATION, token);
 
        HttpEntity<List<PurchaseRequest>> requestEntity = new HttpEntity<>(requestsBody, headers);
 
